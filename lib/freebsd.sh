@@ -106,7 +106,7 @@ freebsd_objdir ( ) {
 }
 
 #
-# freebsd_src_test: Check that this looks like a FreeBSD src tree.
+# freebsd_src_download: Download FreeBSD src tree.
 #
 freebsd_src_download ( ) {
 	echo
