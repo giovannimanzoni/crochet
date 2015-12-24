@@ -35,6 +35,7 @@
 #board_setup VersatilePB
 #board_setup ZedBoard
 #board_setup Wandboard
+#board_setup FoxG20
 #
 
 # Size of the disk image that will be built.  This is usually the same
@@ -166,9 +167,9 @@
 # FreeBSD source that will be used for kernel, world, and ubldr.
 # This directory doesn't need to exist yet.  When you run the script,
 # it will tell you how to get appropriate sources into this directory.
-# (I find FREEBSD_SRC=${TOPDIR}/src to be useful.)
+# (I find FREEBSD_SRC=${TOPDIR}/BOARD_NAME/src to be useful.)
 #
-#FREEBSD_SRC=/usr/src
+FREEBSD_SRC=${TOPDIR}/BOARD_NAME/src
 
 # You will probably never override this, but you may need to
 # understand it: WORKDIR holds all of the created and temporary files
@@ -185,13 +186,13 @@
 # In particular: If you need to do a clean build of everything from
 # scratch, remove the contents of $WORKDIR first.
 #
-#WORKDIR=${TOPDIR}/work
+WORKDIR=${TOPDIR}/BOARD_NAME/work
 
 # The name of the final disk image.
 # This file will be as large as IMAGE_SIZE above, so make
 # sure it's located somewhere with enough space.
 #
-#IMG=${WORKDIR}/FreeBSD-${KERNCONF}.img
+IMG=${WORKDIR}/FreeBSD-${KERNCONF}.img
 
 # Unset this to suppress installworld.  This is
 # useful when experimenting with boot and kernel
@@ -229,6 +230,7 @@
 
 # Build jobs.  The number of make jobs to run in parallel.
 # Defaults to: $(sysctl -n hw.ncpu)
+# but the best is to do 2x $(sysctl -n hw.ncpu)
 #WORLDJOBS="4"
 #KERNJOBS="4"
 
@@ -241,7 +243,7 @@
 #
 #FREEBSD_EXTRA_ARGS="-DNO_CLEAN"
 #FREEBSD_KERNEL_EXTRA_ARGS="-DKERNFAST"
-
+FREEBSD_KERNEL_EXTRA_ARGS="-DKERNFAST"
 
 
 # OVERLAY FILES

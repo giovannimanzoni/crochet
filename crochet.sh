@@ -6,6 +6,7 @@ echo 'Starting at '`date`
 TOPDIR=`cd \`dirname $0\`; pwd`
 LIBDIR=${TOPDIR}/lib
 WORKDIR=${TOPDIR}/work
+FREEBSD_SRC=${TOPDIR}/src
 CONFIGFILE=
 BOARD=
 UPDATE_SOURCE=
@@ -75,6 +76,18 @@ while true; do
 done
 
 #
+# Install needed package
+#
+
+pkg install git devel/subversion python devel/gmake textproc/gsed 
+
+#
+# Install needed package for more features with my implementation
+#
+
+pkg install dialog
+
+#
 # Load user configuration:  This builds the strategy.
 #
 if [ -z "$BOARD" ] && [ -z "$CONFIGFILE" ]; then
@@ -86,6 +99,9 @@ fi
 if [ -n "$CONFIGFILE" ]; then
     load_config $CONFIGFILE
 fi
+
+# Create src directory
+mkdir -p ${FREEBSD_SRC}
 
 # Initialize the work directory, clean out old logs.
 mkdir -p ${WORKDIR}

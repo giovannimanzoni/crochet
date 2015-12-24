@@ -105,27 +105,43 @@ freebsd_objdir ( ) {
     echo "Object files are at: "${FREEBSD_OBJDIR}
 }
 
+#
+# freebsd_src_test: Check that this looks like a FreeBSD src tree.
+#
+freebsd_src_download ( ) {
+	echo
+	echo "IT COULD TAKE MUCH TIME, REPOSITORY IS ABOUT 1.8GB"
+	echo
+	sleep 3
+	svn co https://svn0.us-west.freebsd.org/base/head $FREEBSD_SRC 
+}
+
 # freebsd_src_test: Check that this looks like a FreeBSD src tree.
 #
 # $1: Name of kernel configuration we expect
 #
 freebsd_src_test ( ) {
+
+    @ DOWNLOAD = 0
+
     # FreeBSD source tree has certain files:
     for f in COPYRIGHT Makefile Makefile.inc1 UPDATING; do
         if [ \! -f "$FREEBSD_SRC/$f" ]; then
             echo "This does not look like a FreeBSD source tree."
-            echo "Did not find: $FREEBSD_SRC/$f"
-            shift; freebsd_download_instructions "$@"
-            exit 1
+            echo "Did not find: $FREEBSD_SRC/$f so they will be download"
+	    @ DOWNLOAD = 1
+            shift; #freebsd_download_instructions "$@"
+            #exit 1
         fi
     done
     # FreeBSD source tree has certain directories:
     for d in bin usr.bin usr.sbin contrib gnu cddl sys sys/arm sys/i386; do
         if [ \! -d "$FREEBSD_SRC/$d" ]; then
             echo "This does not look like a FreeBSD source tree."
-            echo "Did not find: $FREEBSD_SRC/$d"
-            shift; freebsd_download_instructions "$@"
-            exit 1
+            echo "Did not find: $FREEBSD_SRC/$d so they will be download"
+	    @ DOWNLOAD = 1
+            shift; #freebsd_download_instructions "$@"
+            #exit 1
         fi
     done
     # Make sure it has the config file we expect under the appropriate arch:
@@ -142,9 +158,14 @@ freebsd_src_test ( ) {
             ;;
     esac
     if [ \! -f "$FREEBSD_SRC/sys/$ARCH/conf/$1" ]; then
-        echo "Didn't find $FREEBSD_SRC/sys/$ARCH/conf/$1"
-        shift; freebsd_download_instructions "$@"
-        exit 1
+        echo "Didn't find $FREEBSD_SRC/sys/$ARCH/conf/$1 so they will be download"
+	@ DOWNLOAD = 1        
+	shift; #freebsd_download_instructions "$@"
+        #exit 1
+    fi
+
+    if ( $DOWNLOAD == 1 ) then
+	freebsd_src_download	
     fi
     freebsd_src_version
     freebsd_objdir
