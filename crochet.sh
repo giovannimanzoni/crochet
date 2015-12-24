@@ -79,13 +79,13 @@ done
 # Install needed package
 #
 
-pkg install git devel/subversion python devel/gmake textproc/gsed 
+pkg install -y git devel/subversion python devel/gmake textproc/gsed 
 
 #
 # Install needed package for more features with my implementation
 #
 
-pkg install dialog
+# pkg install dialog -> error, in which port is ?
 
 #
 # Load user configuration:  This builds the strategy.

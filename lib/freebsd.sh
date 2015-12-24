@@ -164,7 +164,7 @@ freebsd_src_test ( ) {
         #exit 1
     fi
 
-    if [ $DOWNLOAD -eq 1 ] then
+    if [ $DOWNLOAD -eq 1 ]; then
 	freebsd_src_download	
     fi
     freebsd_src_version
