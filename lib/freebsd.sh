@@ -132,7 +132,12 @@ freebsd_src_build ( ) {
 	echo
 	sleep 3
 
+	#save current folder
 	this_dir=${PWD##}
+
+	#make if not exist
+	mkdir -p $FREEBSD_SRC
+
 	cd $FREEBSD_SRC
 
 	#make clean so you can mod this section and in automatic remake sources
