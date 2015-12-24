@@ -118,7 +118,7 @@ freebsd_src_download ( ) {
 	mkdir -p ${FREEBSD_SRC}
 
 	#download FreeBSD repos
-	svn co https://svn0.us-west.freebsd.org/base/head $FREEBSD_SRC 
+	svn co https://svn.freebsd.org/base/head $FREEBSD_SRC 
 }
 
 #
@@ -134,28 +134,33 @@ freebsd_src_build ( ) {
 	cd $FREEBSD_SRC
 
 	#make clean so you can mod this section and in automatic remake sources
-	make clean
+	echo "Clean $FREEBSD_SRC"
+#	make clean > /dev/null 2>&1
 
 	case "${BOARD}" in
         	"BeagleBone") 
 			echo "Build for BeagleBone"
 			sleep 10
-			make XDEV=arm XDEV_ARCH=armv6 xdev
+			make ${SRCJOB} XDEV=arm XDEV_ARCH=armv6 xdev #  &> /dev/null
 			;;
         	"RaspberryPi") 
 			echo "Build for Raspberry Pi"
 			sleep 10
 			# https://www.raspberrypi.org/forums/viewtopic.php?f=85&t=90613
 			echo "Build for RaspberryPi"
-			make XDEV=arm XDEV_ARCH=armv6 WITH_GCC=1 WITH_GCC_BOOTSTRAP=1 WITHOUT_CLANG=1 WITHOUT_CLANG_BOOTSTRAP=1 WITHOUT_CLANG_IS_CC=1 xdev xdev-links
+			make ${SRCJOB} XDEV=arm XDEV_ARCH=armv6 WITH_GCC=1 WITH_GCC_BOOTSTRAP=1 WITHOUT_CLANG=1 WITHOUT_CLANG_BOOTSTRAP=1 WITHOUT_CLANG_IS_CC=1 xdev xdev-links &> /dev/null
 	            	;;
         	*) 
 			echo
-			echo "You have to compile $FREEBSD_SRC like make XDEV=arm XDEV_ARCH=armv6 xdev WITH_GCC etc etc"
+			echo "You have to compile $FREEBSD_SRC like make -j 8 XDEV=arm XDEV_ARCH=armv6 xdev WITH_GCC etc etc"
 			echo
 			exit
 	            	;;
 	esac
+	echo "Build done."
+
+
+exit
 
 	cd $this_dir
 }

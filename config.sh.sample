@@ -231,8 +231,11 @@ IMG=${WORKDIR}/FreeBSD-${KERNCONF}.img
 # Build jobs.  The number of make jobs to run in parallel.
 # Defaults to: $(sysctl -n hw.ncpu)
 # but the best is to do 2x $(sysctl -n hw.ncpu)
-#WORLDJOBS="4"
-#KERNJOBS="4"
+#WORLDJOBS="8"
+#KERNJOBS="8"
+
+#Source Jobs for build cross-compiling tools. Must be set
+SRCJOBS="8"
 
 # You can specify a custom src.conf or make.conf; the defaults are:
 #
