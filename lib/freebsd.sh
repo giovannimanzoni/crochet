@@ -122,15 +122,16 @@ freebsd_src_download ( ) {
 #
 freebsd_src_test ( ) {
 
-    DOWNLOAD = 0
+    DOWNLOAD=0
 
     # FreeBSD source tree has certain files:
     for f in COPYRIGHT Makefile Makefile.inc1 UPDATING; do
         if [ \! -f "$FREEBSD_SRC/$f" ]; then
             echo "This does not look like a FreeBSD source tree."
             echo "Did not find: $FREEBSD_SRC/$f so they will be download"
-	    DOWNLOAD = 1
-            shift; #freebsd_download_instructions "$@"
+	    DOWNLOAD=1
+	    break
+            #shift; freebsd_download_instructions "$@"
             #exit 1
         fi
     done
@@ -139,8 +140,9 @@ freebsd_src_test ( ) {
         if [ \! -d "$FREEBSD_SRC/$d" ]; then
             echo "This does not look like a FreeBSD source tree."
             echo "Did not find: $FREEBSD_SRC/$d so they will be download"
-	    DOWNLOAD = 1
-            shift; #freebsd_download_instructions "$@"
+	    DOWNLOAD=1
+	    break
+            #shift; freebsd_download_instructions "$@"
             #exit 1
         fi
     done
@@ -159,12 +161,12 @@ freebsd_src_test ( ) {
     esac
     if [ \! -f "$FREEBSD_SRC/sys/$ARCH/conf/$1" ]; then
         echo "Didn't find $FREEBSD_SRC/sys/$ARCH/conf/$1 so they will be download"
-	DOWNLOAD = 1        
-	shift; #freebsd_download_instructions "$@"
+	DOWNLOAD=1        
+	#shift; #freebsd_download_instructions "$@"
         #exit 1
     fi
 
-    if [ $DOWNLOAD -eq 1 ]; then
+    if [ "$DOWNLOAD" -eq 1 ]; then
 	freebsd_src_download	
     fi
     freebsd_src_version
