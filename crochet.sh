@@ -100,6 +100,9 @@ if [ -n "$CONFIGFILE" ]; then
     load_config $CONFIGFILE
 fi
 
+# Create src directory
+mkdir -p ${FREEBSD_SRC}
+
 # Clean out old logs.
 rm -f ${WORKDIR}/*.log
 
