@@ -112,13 +112,15 @@ freebsd_src_download ( ) {
 	echo
 	echo "IT COULD TAKE MUCH TIME, REPOSITORY IS ABOUT 1.8GB"
 	echo
+	echo "from $FREEBSD_REPO"
+	echo
 	sleep 3
 
 	# Create src directory
 	mkdir -p ${FREEBSD_SRC}
 
 	#download FreeBSD repos
-	svn co https://svn.freebsd.org/base/head $FREEBSD_SRC 
+	svn co $FREEBSD_REPO $FREEBSD_SRC 
 }
 
 #
@@ -135,13 +137,15 @@ freebsd_src_build ( ) {
 
 	#make clean so you can mod this section and in automatic remake sources
 	echo "Clean $FREEBSD_SRC"
-#	make clean > /dev/null 2>&1
+	make clean > /dev/null 2>&1
 
 	case "${BOARD}" in
         	"BeagleBone") 
 			echo "Build for BeagleBone"
 			sleep 10
-			make ${SRCJOB} XDEV=arm XDEV_ARCH=armv6 xdev #  &> /dev/null
+			echo "make xdev"
+			# http://www.onemansanthology.com/blog/freebsd-on-beaglebone-black/
+			make ${SRCJOB} XDEV=arm XDEV_ARCH=armv6 xdev &> /dev/null
 			;;
         	"RaspberryPi") 
 			echo "Build for Raspberry Pi"
@@ -157,10 +161,9 @@ freebsd_src_build ( ) {
 			exit
 	            	;;
 	esac
+	echo
 	echo "Build done."
-
-
-exit
+	echo
 
 	cd $this_dir
 }

@@ -143,6 +143,14 @@
 #
 #option UsrSrc
 
+#
+# Set remote FreeBSD repo
+#
+# https://forums.freebsd.org/threads/current-vs-stable-vs-release.3716/
+#
+FREEBSD_REPO=https://svn.freebsd.org/base/release/10.2.0/
+
+
 # Partition the system in a way similar to NanoBSD.
 # The arguments and default values are:
 #
@@ -167,9 +175,9 @@
 # FreeBSD source that will be used for kernel, world, and ubldr.
 # This directory doesn't need to exist yet.  When you run the script,
 # it will tell you how to get appropriate sources into this directory.
-# (I find FREEBSD_SRC=${TOPDIR}/BOARD_NAME/src to be useful.)
+# (I find FREEBSD_SRC=${TOPDIR}/BOARD_NAME/srcVERSION to be useful.)
 #
-FREEBSD_SRC=${TOPDIR}/BOARD_NAME/src
+FREEBSD_SRC=${TOPDIR}/BOARD_NAME/src10.2.0
 
 # You will probably never override this, but you may need to
 # understand it: WORKDIR holds all of the created and temporary files
