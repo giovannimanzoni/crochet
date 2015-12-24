@@ -100,11 +100,7 @@ if [ -n "$CONFIGFILE" ]; then
     load_config $CONFIGFILE
 fi
 
-# Create src directory
-mkdir -p ${FREEBSD_SRC}
-
-# Initialize the work directory, clean out old logs.
-mkdir -p ${WORKDIR}
+# Clean out old logs.
 rm -f ${WORKDIR}/*.log
 
 # Details for the email reports

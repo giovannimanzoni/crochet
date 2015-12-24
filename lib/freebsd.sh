@@ -113,7 +113,49 @@ freebsd_src_download ( ) {
 	echo "IT COULD TAKE MUCH TIME, REPOSITORY IS ABOUT 1.8GB"
 	echo
 	sleep 3
+
+	# Create src directory
+	mkdir -p ${FREEBSD_SRC}
+
+	#download FreeBSD repos
 	svn co https://svn0.us-west.freebsd.org/base/head $FREEBSD_SRC 
+}
+
+#
+# freebsd_src_build: Build the cross-development tools
+#
+freebsd_src_build ( ) {
+	echo
+	echo "Build the cross-development tools: IT COULD TAKE MUCH TIME, ABOUT 1,5 HOUR ON i3 CPU WITH SSD HDD"
+	echo
+	sleep 3
+
+	this_dir=${PWD##}
+	cd $FREEBSD_SRC
+
+	#make clean so you can mod this section and in automatic remake sources
+	make clean
+
+	case ${BOARD} in
+        	BeagleBone*) 
+			echo "Build for BeagleBone"
+			sleep 3
+			make XDEV=arm XDEV_ARCH=armv6 xdev
+			;;
+        	RaspberryPi*) 
+			# https://www.raspberrypi.org/forums/viewtopic.php?f=85&t=90613
+			echo "Build for RaspberryPi"
+			make XDEV=arm XDEV_ARCH=armv6 WITH_GCC=1 WITH_GCC_BOOTSTRAP=1 WITHOUT_CLANG=1 WITHOUT_CLANG_BOOTSTRAP=1 WITHOUT_CLANG_IS_CC=1 xdev xdev-links
+	            	;;
+        	*) 
+			echo
+			echo "You have to compile $FREEBSD_SRC like make XDEV=arm XDEV_ARCH=armv6 xdev WITH_GCC etc etc"
+			echo
+			exit
+	            	;;
+	esac
+
+	cd $this_dir
 }
 
 # freebsd_src_test: Check that this looks like a FreeBSD src tree.
@@ -169,10 +211,19 @@ freebsd_src_test ( ) {
     if [ "$DOWNLOAD" -eq 1 ]; then
 	freebsd_src_download	
     fi
+    if [ ! -d "$WORKDIR" ]; then
+	freebsd_src_build	
+    fi
+
     freebsd_src_version
     freebsd_objdir
     echo "Found suitable FreeBSD source tree in:"
     echo "    $FREEBSD_SRC"
+
+    # Initialize the work directory, clean out old logs.
+    #   I do it here because I must know whether the folder had need to be recompiled.
+    #   My mod work if ${WORKDIR} does not exist. The original script need create it. so create that folder.
+    mkdir -p ${WORKDIR}
 }
 
 # freebsd_current_test:  Check that FreeBSD-CURRENT sources are available
