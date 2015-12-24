@@ -37,6 +37,11 @@ board_setup ( ) {
     fi
     BOARDDIRS="$BOARDDIRS $BOARDDIR"
     echo "Board: $1"
+
+    #set BOARD globally
+    BOARD=$1
+    export BOARD
+
     . $BOARDDIR/setup.sh
 
     PRIORITY=20 strategy_add $PHASE_FREEBSD_BOARD_INSTALL board_overlay_files $BOARDDIR

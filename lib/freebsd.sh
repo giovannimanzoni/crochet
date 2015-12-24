@@ -136,13 +136,15 @@ freebsd_src_build ( ) {
 	#make clean so you can mod this section and in automatic remake sources
 	make clean
 
-	case ${BOARD} in
-        	BeagleBone*) 
+	case "${BOARD}" in
+        	"BeagleBone") 
 			echo "Build for BeagleBone"
-			sleep 3
+			sleep 10
 			make XDEV=arm XDEV_ARCH=armv6 xdev
 			;;
-        	RaspberryPi*) 
+        	"RaspberryPi") 
+			echo "Build for Raspberry Pi"
+			sleep 10
 			# https://www.raspberrypi.org/forums/viewtopic.php?f=85&t=90613
 			echo "Build for RaspberryPi"
 			make XDEV=arm XDEV_ARCH=armv6 WITH_GCC=1 WITH_GCC_BOOTSTRAP=1 WITHOUT_CLANG=1 WITHOUT_CLANG_BOOTSTRAP=1 WITHOUT_CLANG_IS_CC=1 xdev xdev-links
@@ -211,6 +213,8 @@ freebsd_src_test ( ) {
     if [ "$DOWNLOAD" -eq 1 ]; then
 	freebsd_src_download	
     fi
+
+    #Build the cross-development tools if $WORKDIR do not exist. usefull while porting on new board for recompile with different arguments and must be done for first time
     if [ ! -d "$WORKDIR" ]; then
 	freebsd_src_build	
     fi
