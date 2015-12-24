@@ -6,12 +6,14 @@ This tool was formerly known as "freebsd-beaglebone" or
 But it now supports more boards and should easily extend
 to support many more.
 
-[FAQ](https://github.com/giovannimanzoni/crochet/wiki/FAQ)
+[FAQ](https://github.com/freebsd/crochet/wiki/FAQ)
 
-[Supported Platforms](https://github.com/giovannimanzoni/crochet/wiki/Supported-Platforms)
+[Supported Platforms](https://github.com/freebsd/crochet/wiki/Supported-Platforms)
 
-[How to Build a Disk Image](https://github.com/giovannimanzoni/crochet/wiki/How-to-Build-a-Disk-Image)
++ I work on add FOXG 20 on Crochet
 
-[Command-line Options](https://github.com/giovannimanzoni/crochet/wiki/Command-Line-Options)
+[How to Build a Disk Image](https://github.com/freebsd/crochet/wiki/How-to-Build-a-Disk-Image)
 
-[Potential Projects](https://github.com/giovannimanzoni/crochet/wiki/Projects)
+[Command-line Options](https://github.com/freebsd/crochet/wiki/Command-Line-Options)
+
+[Potential Projects](https://github.com/freebsd/crochet/wiki/Projects)
